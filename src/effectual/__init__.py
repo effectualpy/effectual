@@ -14,8 +14,8 @@ def dist():
 @click.command("dev")
 def dev():
     """Bundles your source directory."""
-    from . import dev
-    dev.main()
+    from . import developer
+    developer.main()
 
 main.add_command(dist)
 main.add_command(dev)
