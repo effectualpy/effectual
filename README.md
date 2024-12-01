@@ -33,6 +33,8 @@ minification = true
 compressionLevel=5
 ```
 
+Note you must have a \_\_main\_\_.py entrypoint for this to work
+
 # Bundling
 
 ## Development
