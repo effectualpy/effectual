@@ -18,6 +18,7 @@ def dev():
     dev.main()
 
 main.add_command(dist)
+main.add_command(dev)
 
 if __name__ == "__main__":
     main()
