@@ -1,7 +1,9 @@
+from typing import Any
+
 import rtoml
 
 
-def loadConfig(configPath: str) -> dict:
+def loadConfig(configPath: str) -> dict[Any, Any]:
     """Loads effectual config from a file
 
     Args:
@@ -16,8 +18,17 @@ def loadConfig(configPath: str) -> dict:
     """
     try:
         with open(configPath, "r", encoding="utf-8") as file:
-            tomlFile: dict = dict(rtoml.load(file))
-            configData: dict = tomlFile.get("tool").get("effectual")
+            configData: dict[Any, Any] = dict(rtoml.load(file))
+            if configData is None:
+                configData = {
+                    "sourceDirectory": "./src/",
+                    "outputDirectory": "./dist/",
+                    "outputFileName": "bundle.pyz",
+                    "minification": True,
+                    "compressionLevel": 5,
+                }
+            else:
+                configData = configData.get("tool").get("effectual")  # type: ignore
 
     except ValueError as e:
         raise RuntimeError(f"Invalid TOML in {configPath}: {e}")

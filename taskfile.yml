@@ -20,3 +20,8 @@ tasks:
     lint:
         cmds:
             - uv run ruff check --config pyproject.toml
+            
+    
+    type:
+        cmds:
+            - uv run mypy src/effectual/*.py

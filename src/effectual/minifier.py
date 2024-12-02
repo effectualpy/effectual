@@ -38,7 +38,7 @@ def minifyToString(filePath: Path) -> str:
     Returns:
         str: Minified string
     """
-    with filePath.open("r", encoding="utf-8") as fileR:
+    with filePath.open("r") as fileR:
         minifiedCode: str = str(
             minify(
                 fileR.read(),
@@ -46,6 +46,6 @@ def minifyToString(filePath: Path) -> str:
                 remove_literal_statements=True,
                 remove_debug=True,
             )
-        ).encode("utf-8")
+        )
 
     return minifiedCode

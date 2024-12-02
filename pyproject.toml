@@ -1,6 +1,6 @@
 [project]
 name = "effectual"
-version = "0.3.4"
+version = "0.3.5"
 description = "A python package/script bundler"
 readme = "README.md"
 license = "MIT"
@@ -42,6 +42,7 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
+    "mypy>=1.13.0",
     "ruff>=0.8.1",
 ]
 
@@ -133,3 +134,21 @@ docstring-code-format = false
 # This only has an effect when the `docstring-code-format` setting is
 # enabled.
 docstring-code-line-length = "dynamic"
+
+[tool.mypy]
+
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+strict_equality = true
+
+check_untyped_defs = true
+
+disallow_subclassing_any = true
+disallow_untyped_decorators = true
+disallow_any_generics = true
+
+disallow_untyped_calls = true
+disallow_incomplete_defs = true
+disallow_untyped_defs = true

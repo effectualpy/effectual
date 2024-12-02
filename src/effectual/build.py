@@ -1,8 +1,10 @@
+import importlib
 import os
 import shutil
 import zipfile
 from pathlib import Path
 from time import perf_counter
+from typing import Any
 
 import rtoml
 
@@ -65,7 +67,7 @@ def bundleFiles(
 
 def dependencies(minify: bool) -> None:
     with open("./pyproject.toml", "r", encoding="utf-8") as file:
-        packages: list[str] = dict(rtoml.load(file)).get("project").get("dependencies")
+        packages: list[str] = dict(rtoml.load(file)).get("project").get("dependencies")  # type: ignore
 
     arguments: list[str] = ["--no-compile", "--quiet", "--no-binary=none", "--no-cache"]
 
@@ -81,7 +83,7 @@ def dependencies(minify: bool) -> None:
 
     print(f"{tagColor('optimizing')} || {', '.join(packages)}")
 
-    import multiprocessing
+    multiprocessing = importlib.import_module("multiprocessing")
 
     with multiprocessing.Pool(processes=multiprocessing.cpu_count()) as pool:
         pool.map(optimizeDependencies, Path(pathToInstallTo).rglob("*"))
@@ -109,7 +111,7 @@ def main() -> None:
         RuntimeError: In the event there is no source directory
     """
 
-    configData: dict = loadConfig("./pyproject.toml")
+    configData: dict[Any, Any] = loadConfig("./pyproject.toml")
 
     sourceDirectory: Path = Path(configData.get("sourceDirectory", "src/"))
     outputDirectory: Path = Path(configData.get("outputDirectory", "out/"))
@@ -126,14 +128,14 @@ def main() -> None:
         )
 
     uvHashPath: Path = Path("./.effectual_cache/pyprojectHash.toml")
-    currentHash: dict[str] = dict()
+    currentHash: dict[str, dict] = dict()
 
     startTime = perf_counter()
 
     Path("./.effectual_cache/").mkdir(parents=True, exist_ok=True)
-    currentHash["hashes"]: dict[dict] = dict()
-    currentHash["hashes"]["pyproject"] = getFilehash("./pyproject.toml")
-    currentHash["hashes"]["lock"] = getFilehash("./uv.lock")
+    currentHash["hashes"] = dict()
+    currentHash["hashes"]["pyproject"] = getFilehash(Path("./pyproject.toml"))
+    currentHash["hashes"]["lock"] = getFilehash(Path("./uv.lock"))
 
     if uvHashPath.exists():
         with open(uvHashPath, "r") as file:

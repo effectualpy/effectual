@@ -2,6 +2,7 @@ import subprocess
 import time
 import zipfile
 from pathlib import Path
+from typing import Any
 
 from .colors import completeColor, fileColor, tagColor
 from .config import loadConfig
@@ -27,10 +28,9 @@ def bundle(sourceDirectory: Path, outputFile: Path) -> None:
 
 def main() -> None:
     """Super fast bundling for the 'task dev' command"""
-
-    configData: dict = loadConfig("./pyproject.toml")
+    configData: dict[Any, Any] = loadConfig("./pyproject.toml")
     sourceDirectory: Path = Path(configData.get("sourceDirectory", "src/"))
-    outputFileName: str = Path(configData.get("outputFileName", "bundle.pyz"))
+    outputFileName: Path = Path(configData.get("outputFileName", "bundle.pyz"))
     devBundlePath: Path = Path("./.effectual_cache/dev/")
     devBundlePath.mkdir(parents=True, exist_ok=True)
 
