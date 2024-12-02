@@ -5,6 +5,7 @@ from pathlib import Path
 from time import perf_counter
 
 import rtoml
+
 from .colors import completeColor, fileColor, folderColor, tagColor
 from .config import loadConfig
 from .fileHash import getFilehash

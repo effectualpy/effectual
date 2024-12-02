@@ -1,0 +1,22 @@
+version: "3.17"
+
+tasks:
+
+    dist:
+        cmds:
+            - uv sync
+            - uv lock
+            - task: check
+            - uv build
+            - uv publish
+
+    check:
+        deps: [lint, format]
+
+    format:
+        cmds:
+            - uv run ruff format --config pyproject.toml
+
+    lint:
+        cmds:
+            - uv run ruff check --config pyproject.toml
