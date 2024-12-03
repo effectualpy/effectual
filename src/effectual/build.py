@@ -90,11 +90,12 @@ def dependencies(minify: bool) -> None:
 
 
 def optimizeDependencies(file: Path) -> None:
+    stringFile:str = str(file)
     if (
         file.suffix in (".pyc", ".pyd", ".exe", ".typed")
-        or "__pycache__" in str(file)
-        or ".dist-info" in str(file)
-        or ".lock" in str(file)
+        or "__pycache__" in stringFile
+        or ".dist-info" in stringFile
+        or ".lock" in stringFile
     ):
         try:
             file.unlink()
@@ -128,7 +129,7 @@ def main() -> None:
         )
 
     uvHashPath: Path = Path("./.effectual_cache/pyprojectHash.toml")
-    currentHash: dict[str, dict] = dict()
+    currentHash: dict[str, dict[str, str]] = dict()
 
     startTime = perf_counter()
 
@@ -139,7 +140,7 @@ def main() -> None:
 
     if uvHashPath.exists():
         with open(uvHashPath, "r") as file:
-            lastHash: dict = dict(rtoml.load(file)).get("hashes")
+            lastHash: dict[Any, Any] = dict(rtoml.load(file)).get("hashes")
         if currentHash["hashes"] != lastHash:
             with open(uvHashPath, "w") as file:
                 rtoml.dump(currentHash, file)
