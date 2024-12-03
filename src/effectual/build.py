@@ -21,14 +21,14 @@ def bundleFiles(
     compressionLevel: int,
     minification: bool,
 ) -> None:
-    """Bundles dependencies and scripts into a single .py archive
+    """Bundles dependencies and scripts into a single .pyz archive
 
     Args:
         sourceDirectory (Path): Source directory which must contain a __main__.py script
         outputDirectory (Path): Output directory for the bundle
         outputFileName (str): Name of the output bundle
         compressionLevel (int): Compression level for the bundle from 0-9
-        minification (bool): If the dependencies and scripts should be minified
+        minification (bool): If the scripts should be minified
     """
     outputDirectory.mkdir(parents=True, exist_ok=True)
     outputPath: Path = outputDirectory / outputFileName
