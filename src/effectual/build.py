@@ -90,7 +90,7 @@ def dependencies(minify: bool) -> None:
 
 
 def optimizeDependencies(file: Path) -> None:
-    stringFile:str = str(file)
+    stringFile: str = str(file)
     if (
         file.suffix in (".pyc", ".pyd", ".exe", ".typed")
         or "__pycache__" in stringFile
