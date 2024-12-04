@@ -40,12 +40,12 @@ def main() -> None:
 
     runCommand = subprocess.Popen(["uv", "run", outputFile], shell=True)
 
-    lastHashList: list[str] = getAllHashes(sourceDirectory)
+    lastHashSet: set[str] = getAllHashes(sourceDirectory, ".py")
 
     while True:
-        currentHashList: list[str] = getAllHashes(sourceDirectory)
-        if currentHashList != lastHashList:
-            lastHashList = currentHashList
+        currentHashSet: set[str] = getAllHashes(sourceDirectory, ".py")
+        if currentHashSet != lastHashSet:
+            lastHashSet = currentHashSet
             runCommand.kill()
             runCommand.wait()
             outputFile.unlink()
