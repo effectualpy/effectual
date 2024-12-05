@@ -6,11 +6,10 @@ from pathlib import Path
 from time import perf_counter
 from typing import Any
 
-import rtoml
 from watch_lite import getHash
 
 from .colors import completeColor, fileColor, folderColor, tagColor
-from .config import loadConfig
+from .config import dumpHashes, loadConfig, loadToml
 from .minifier import minifyFile, minifyToString
 
 
@@ -67,7 +66,7 @@ def bundleFiles(
 
 def dependencies(minify: bool) -> None:
     with open("./pyproject.toml", "r", encoding="utf-8") as file:
-        packages: list[str] = dict(rtoml.load(file)).get("project").get("dependencies")  # type: ignore
+        packages: list[str] = loadToml(file).get("project").get("dependencies")  # type: ignore
 
     arguments: list[str] = ["--no-compile", "--quiet", "--no-binary=none", "--no-cache"]
 
@@ -140,14 +139,14 @@ def main() -> None:
 
     if uvHashPath.exists():
         with open(uvHashPath, "r") as file:
-            lastHash: dict[Any, Any] = dict(rtoml.load(file)).get("hashes")
+            lastHash: dict[Any, Any] = loadToml(file).get("hashes")
         if currentHash["hashes"] != lastHash:
             with open(uvHashPath, "w") as file:
-                rtoml.dump(currentHash, file)
+                dumpHashes(currentHash, file)
             dependencies(minify=minification)
     else:
         with open(uvHashPath, "x") as file:
-            rtoml.dump(currentHash, file)
+            dumpHashes(currentHash, file)
         dependencies(minify=minification)
 
     bundleFiles(
