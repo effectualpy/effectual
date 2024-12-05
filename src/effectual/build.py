@@ -10,7 +10,8 @@ from watch_lite import getHash
 
 from .colors import completeColor, fileColor, folderColor, tagColor
 from .config import dumpHashes, loadConfig, loadToml
-from .transformations import minifyFile, minifyToString
+from .transformations import minifyToString
+from .treeshake import cleanPackages
 
 
 def bundleFiles(
@@ -73,12 +74,7 @@ def dependencies(minify: bool) -> None:
     )
 
     if len(packages) != 0:
-        arguments: list[str] = [
-            "--no-compile",
-            "--quiet",
-            "--no-binary=none",
-            "--no-cache",
-        ]
+        arguments: list[str] = ["--no-compile", "--quiet", "--no-binary=none"]
 
         pathToInstallTo: str = "./.effectual_cache/cachedPackages"
         argumentString: str = " ".join(arguments)
@@ -97,23 +93,7 @@ def dependencies(minify: bool) -> None:
         multiprocessing = importlib.import_module("multiprocessing")
 
         with multiprocessing.Pool(processes=multiprocessing.cpu_count()) as pool:
-            pool.map(optimizeDependencies, Path(pathToInstallTo).rglob("*"))
-
-
-def optimizeDependencies(file: Path) -> None:
-    stringFile: str = str(file)
-    if (
-        file.suffix in (".pyc", ".pyd", ".exe", ".typed")
-        or "__pycache__" in stringFile
-        or ".dist-info" in stringFile
-        or ".lock" in stringFile
-    ):
-        try:
-            file.unlink()
-        except PermissionError:
-            pass
-    elif file.suffix == ".py":
-        minifyFile(file)
+            pool.map(cleanPackages, Path(pathToInstallTo).rglob("*"))
 
 
 def main() -> None:
