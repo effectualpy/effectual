@@ -1,10 +1,11 @@
 import io
+from pathlib import Path
 from typing import Any
 
 import rtoml
 
 
-def loadToml(tomlFile: str) -> dict[str, Any]:
+def loadToml(tomlFile: str | Path) -> dict[str, Any]:
     """Loads a toml file from a specific path to a dictionary
 
     Args:
@@ -19,14 +20,14 @@ def loadToml(tomlFile: str) -> dict[str, Any]:
     """
     try:
         with open(tomlFile, "r", encoding="utf-8") as file:
-            return dict(rtoml.load(file))  # type: ignore
+            return dict(rtoml.load(file))
     except ValueError as e:
         raise RuntimeError(f"Invalid TOML in {tomlFile}: {e}")
     except FileNotFoundError:
         raise RuntimeError(f"TOML file {tomlFile} not found.")
 
 
-def loadConfig(configPath: str) -> dict[Any, Any]:
+def loadConfig(configPath: str = "./pyproject.toml") -> dict[Any, Any]:
     """Loads effectual config from a file
 
     Args:
@@ -57,4 +58,4 @@ def dumpHashes(hashesToDump: dict[str, dict[str, str]], file: io.TextIOWrapper) 
         hashesToDump (dict[str, dict[str, str]]): Dictionary of hashes to dump as toml
         file (_type_): File object
     """
-    return rtoml.dump(hashesToDump, file, pretty=False)
+    rtoml.dump(hashesToDump, file, pretty=False)

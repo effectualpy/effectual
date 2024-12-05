@@ -46,10 +46,10 @@ def main() -> None:
     while True:
         currentHashSet: set[str] = getAllHashes(str(sourceDirectory))
         if currentHashSet != lastHashSet:
-            lastHashSet = currentHashSet
             runCommand.kill()
             runCommand.wait()
             outputFile.unlink()
+            lastHashSet = currentHashSet
             print(f"{tagColor('reloaded')}   || file change detected")
             bundle(sourceDirectory, outputFile)
             runCommand = subprocess.Popen(["uv", "run", outputFile], shell=True)

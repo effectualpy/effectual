@@ -8,7 +8,10 @@ def main() -> None:
 
 @click.command("dist")
 def dist() -> None:
-    """Bundles your source directory."""
+    """
+    Bundles your source directory
+    into a production bundle
+    """
     from . import build
 
     build.main()
@@ -16,7 +19,10 @@ def dist() -> None:
 
 @click.command("dev")
 def dev() -> None:
-    """Bundles your source directory."""
+    """
+    Bundles your source directory
+    into a developer bundle
+    """
     from . import developer
 
     developer.main()

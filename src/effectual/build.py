@@ -10,15 +10,15 @@ from watch_lite import getHash
 
 from .colors import completeColor, fileColor, folderColor, tagColor
 from .config import dumpHashes, loadConfig, loadToml
-from .minifier import minifyFile, minifyToString
+from .transformations import minifyFile, minifyToString
 
 
 def bundleFiles(
-    sourceDirectory: Path,
-    outputDirectory: Path,
-    outputFileName: str,
-    compressionLevel: int,
-    minification: bool,
+    sourceDirectory: Path = Path("./src/"),
+    outputDirectory: Path = Path("./out"),
+    outputFileName: str = "bundle.pyz",
+    compressionLevel: int = 5,
+    minification: bool = True,
 ) -> None:
     """Bundles dependencies and scripts into a single .pyz archive
 
@@ -42,16 +42,19 @@ def bundleFiles(
         compression=zipfile.ZIP_DEFLATED,
     ) as bundler:
         cachePath: Path = Path("./.effectual_cache/cachedPackages")
+        if cachePath.exists():
+            if os.listdir(cachePath):
+                totalSize: int = int(0)
+                for cachedFile in cachePath.rglob("*"):
+                    if cachedFile.is_dir() and not any(cachedFile.iterdir()):
+                        continue
+                    totalSize += cachedFile.stat().st_size
+                    arcName = cachedFile.relative_to(cachePath)
+                    bundler.write(cachedFile, arcname=arcName)
 
-        totalSize: int = int(0)
-        for cachedFile in cachePath.rglob("*"):
-            if cachedFile.is_dir() and not any(cachedFile.iterdir()):
-                continue
-            totalSize += cachedFile.stat().st_size
-            arcName = cachedFile.relative_to(cachePath)
-            bundler.write(cachedFile, arcname=arcName)
-
-        print(f"{tagColor('bundling')}   || uv dependencies {folderColor(totalSize)}")
+                print(
+                    f"{tagColor('bundling')}   || uv dependencies {folderColor(totalSize)}"  # noqa: E501
+                )
 
         for pyFile in sourceDirectory.rglob("*.py"):
             print(f"{tagColor('bundling')}   || {pyFile.name} {fileColor(pyFile)}")
@@ -67,26 +70,34 @@ def bundleFiles(
 def dependencies(minify: bool) -> None:
     packages: list[str] = (
         loadToml("./pyproject.toml").get("project").get("dependencies")
-    )  # type: ignore
+    )
 
-    arguments: list[str] = ["--no-compile", "--quiet", "--no-binary=none", "--no-cache"]
+    if len(packages) != 0:
+        arguments: list[str] = [
+            "--no-compile",
+            "--quiet",
+            "--no-binary=none",
+            "--no-cache",
+        ]
 
-    pathToInstallTo: str = "./.effectual_cache/cachedPackages"
-    argumentString: str = " ".join(arguments)
+        pathToInstallTo: str = "./.effectual_cache/cachedPackages"
+        argumentString: str = " ".join(arguments)
 
-    if Path(pathToInstallTo).exists():
-        shutil.rmtree(pathToInstallTo)
+        if Path(pathToInstallTo).exists():
+            shutil.rmtree(pathToInstallTo)
 
-    for key in packages:
-        print(f"{tagColor('installing')} || {key}")
-        os.system(f'uv pip install "{key}" {argumentString} --target {pathToInstallTo}')
+        for key in packages:
+            print(f"{tagColor('installing')} || {key}")
+            os.system(
+                f'uv pip install "{key}" {argumentString} --target {pathToInstallTo}'
+            )
 
-    print(f"{tagColor('optimizing')} || {', '.join(packages)}")
+        print(f"{tagColor('optimizing')} || {', '.join(packages)}")
 
-    multiprocessing = importlib.import_module("multiprocessing")
+        multiprocessing = importlib.import_module("multiprocessing")
 
-    with multiprocessing.Pool(processes=multiprocessing.cpu_count()) as pool:
-        pool.map(optimizeDependencies, Path(pathToInstallTo).rglob("*"))
+        with multiprocessing.Pool(processes=multiprocessing.cpu_count()) as pool:
+            pool.map(optimizeDependencies, Path(pathToInstallTo).rglob("*"))
 
 
 def optimizeDependencies(file: Path) -> None:
@@ -120,8 +131,7 @@ def main() -> None:
     compressionLevel: int = max(
         0, min(9, configData.get("compressionLevel", 5))
     )  # Default level if not set
-    global minification
-    minification = configData.get("minification", True)
+    minification: bool = configData.get("minification", True)
 
     if not sourceDirectory.is_dir():
         raise RuntimeError(
