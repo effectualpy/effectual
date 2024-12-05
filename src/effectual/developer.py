@@ -3,10 +3,10 @@ import time
 import zipfile
 from pathlib import Path
 from typing import Any
+from watch_lite import getAllHashes
 
 from .colors import completeColor, fileColor, tagColor
 from .config import loadConfig
-from .fileHash import getAllHashes
 
 
 def bundle(sourceDirectory: Path, outputFile: Path) -> None:
@@ -40,10 +40,10 @@ def main() -> None:
 
     runCommand = subprocess.Popen(["uv", "run", outputFile], shell=True)
 
-    lastHashSet: set[str] = getAllHashes(sourceDirectory, ".py")
+    lastHashSet: set[str] = getAllHashes(str(sourceDirectory))
 
     while True:
-        currentHashSet: set[str] = getAllHashes(sourceDirectory, ".py")
+        currentHashSet: set[str] = getAllHashes(str(sourceDirectory))
         if currentHashSet != lastHashSet:
             lastHashSet = currentHashSet
             runCommand.kill()

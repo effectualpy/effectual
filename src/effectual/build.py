@@ -5,12 +5,12 @@ import zipfile
 from pathlib import Path
 from time import perf_counter
 from typing import Any
+from watch_lite import getHash
 
 import rtoml
 
 from .colors import completeColor, fileColor, folderColor, tagColor
 from .config import loadConfig
-from .fileHash import getFilehash
 from .minifier import minifyFile, minifyToString
 
 
@@ -135,8 +135,8 @@ def main() -> None:
 
     Path("./.effectual_cache/").mkdir(parents=True, exist_ok=True)
     currentHash["hashes"] = dict()
-    currentHash["hashes"]["pyproject"] = getFilehash(Path("./pyproject.toml"))
-    currentHash["hashes"]["lock"] = getFilehash(Path("./uv.lock"))
+    currentHash["hashes"]["pyproject"] = getHash("./pyproject.toml")
+    currentHash["hashes"]["lock"] = getHash("./uv.lock")
 
     if uvHashPath.exists():
         with open(uvHashPath, "r") as file:
