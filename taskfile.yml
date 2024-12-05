@@ -5,7 +5,7 @@ tasks:
     dist:
         cmds:
             - uv sync
-            - uv lock
+            - uv lock --upgrade
             - task: check
             - uv build
             - uv publish

@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from transformations import minifyFile
+from .transformations import minifyFile
 
 
 def cleanPackages(file: Path) -> None:
