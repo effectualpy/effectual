@@ -5,9 +5,9 @@ import zipfile
 from pathlib import Path
 from time import perf_counter
 from typing import Any
-from watch_lite import getHash
 
 import rtoml
+from watch_lite import getHash
 
 from .colors import completeColor, fileColor, folderColor, tagColor
 from .config import loadConfig

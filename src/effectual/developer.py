@@ -3,6 +3,7 @@ import time
 import zipfile
 from pathlib import Path
 from typing import Any
+
 from watch_lite import getAllHashes
 
 from .colors import completeColor, fileColor, tagColor
