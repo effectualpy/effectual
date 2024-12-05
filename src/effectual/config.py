@@ -4,11 +4,11 @@ from typing import Any
 import rtoml
 
 
-def loadToml(tomlFile: str | io.TextIOWrapper) -> dict[str, Any]:
+def loadToml(tomlFile: str) -> dict[str, Any]:
     """Loads a toml file from a specific path to a dictionary
 
     Args:
-        pathToToml (str | io.TextIOWrapper): Path or object of a toml file
+        pathToToml (str): Path of a toml file
 
     Raises:
         RuntimeError: Toml file is incorrectly configured

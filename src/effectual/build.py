@@ -65,8 +65,9 @@ def bundleFiles(
 
 
 def dependencies(minify: bool) -> None:
-    with open("./pyproject.toml", "r", encoding="utf-8") as file:
-        packages: list[str] = loadToml(file).get("project").get("dependencies")  # type: ignore
+    packages: list[str] = (
+        loadToml("./pyproject.toml").get("project").get("dependencies")
+    )  # type: ignore
 
     arguments: list[str] = ["--no-compile", "--quiet", "--no-binary=none", "--no-cache"]
 
@@ -111,7 +112,7 @@ def main() -> None:
         RuntimeError: In the event there is no source directory
     """
 
-    configData: dict[Any, Any] = loadConfig("./pyproject.toml")
+    configData: dict[str, Any] = loadConfig("./pyproject.toml")
 
     sourceDirectory: Path = Path(configData.get("sourceDirectory", "src/"))
     outputDirectory: Path = Path(configData.get("outputDirectory", "out/"))
@@ -138,8 +139,7 @@ def main() -> None:
     currentHash["hashes"]["lock"] = getHash("./uv.lock")
 
     if uvHashPath.exists():
-        with open(uvHashPath, "r") as file:
-            lastHash: dict[Any, Any] = loadToml(file).get("hashes")
+        lastHash: dict[str, Any] = loadToml(uvHashPath).get("hashes")
         if currentHash["hashes"] != lastHash:
             with open(uvHashPath, "w") as file:
                 dumpHashes(currentHash, file)
