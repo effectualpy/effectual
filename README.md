@@ -56,7 +56,8 @@ This is like what what [Rollup](https://rollupjs.org/) does for vite
 # To be added
 
 - [Treeshaking](https://webpack.js.org/guides/tree-shaking/)
-- [Pre-bundling](https://vite.dev/guide/dep-pre-bundling)
+- Rewriting some time critical parts in Rust 🚀🦀
+- Cross platform compatibility
 - Plugin and loader system
 
 # Contributions
