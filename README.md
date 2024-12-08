@@ -30,7 +30,7 @@ sourceDirectory = "./src/"
 outputDirectory =  "./dist/"
 outputFileName = "bundle.pyz"
 minification = true
-compressionLevel=5
+compressionLevel = 5
 ```
 
 Note you must have a \_\_main\_\_.py entrypoint for this to work

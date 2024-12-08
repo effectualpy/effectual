@@ -48,7 +48,6 @@ def main() -> None:
         if currentHashSet != lastHashSet:
             runCommand.kill()
             runCommand.wait()
-            outputFile.unlink()
             lastHashSet = currentHashSet
             print(f"{tagColor('reloaded')}   || file change detected")
             bundle(sourceDirectory, outputFile)

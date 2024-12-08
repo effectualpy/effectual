@@ -1,4 +1,3 @@
-import importlib
 import os
 import shutil
 import zipfile
@@ -10,8 +9,7 @@ from watch_lite import getHash
 
 from .colors import completeColor, fileColor, folderColor, tagColor
 from .config import dumpHashes, loadConfig, loadToml
-from .transformations import minifyToString
-from .treeshake import cleanPackages
+from .transformations import minifyFile, minifyToString
 
 
 def bundleFiles(
@@ -20,6 +18,7 @@ def bundleFiles(
     outputFileName: str = "bundle.pyz",
     compressionLevel: int = 5,
     minification: bool = True,
+    freshHash: bool = False,
 ) -> None:
     """Bundles dependencies and scripts into a single .pyz archive
 
@@ -29,12 +28,10 @@ def bundleFiles(
         outputFileName (str): Name of the output bundle
         compressionLevel (int): Compression level for the bundle from 0-9
         minification (bool): If the scripts should be minified
+        freshHash (bool): Is the pyproject hash different then previously?
     """
     outputDirectory.mkdir(parents=True, exist_ok=True)
     outputPath: Path = outputDirectory / outputFileName
-
-    if outputPath.exists():
-        outputPath.unlink()
 
     with zipfile.ZipFile(
         outputPath,
@@ -50,8 +47,19 @@ def bundleFiles(
                     if cachedFile.is_dir() and not any(cachedFile.iterdir()):
                         continue
                     totalSize += cachedFile.stat().st_size
-                    arcName = cachedFile.relative_to(cachePath)
-                    bundler.write(cachedFile, arcname=arcName)
+                    stringCachedFile = str(cachedFile)
+                    if (
+                        cachedFile.suffix in (".pyc", ".pyd", ".exe", ".typed")
+                        or "__pycache__" in stringCachedFile
+                        or ".dist-info" in stringCachedFile
+                        or ".lock" in stringCachedFile
+                    ):
+                        continue
+                    else:
+                        if cachedFile.suffix == ".py" and minification and freshHash:
+                            minifyFile(cachedFile)
+                        arcName: str = str(cachedFile.relative_to(cachePath))
+                        bundler.write(cachedFile, arcname=arcName)
 
                 print(
                     f"{tagColor('bundling')}   || uv dependencies {folderColor(totalSize)}"  # noqa: E501
@@ -68,7 +76,8 @@ def bundleFiles(
     print(f"{tagColor('OUTPUT')}     || {outputFileName} {fileColor(outputPath)}")
 
 
-def dependencies(minify: bool) -> None:
+def dependencies() -> None:
+    """Installs relevant dependencies"""
     packages: list[str] = (
         loadToml("./pyproject.toml").get("project").get("dependencies")
     )
@@ -87,13 +96,6 @@ def dependencies(minify: bool) -> None:
             os.system(
                 f'uv pip install "{key}" {argumentString} --target {pathToInstallTo}'
             )
-
-        print(f"{tagColor('optimizing')} || {', '.join(packages)}")
-
-        multiprocessing = importlib.import_module("multiprocessing")
-
-        with multiprocessing.Pool(processes=multiprocessing.cpu_count()) as pool:
-            pool.map(cleanPackages, Path(pathToInstallTo).rglob("*"))
 
 
 def main() -> None:
@@ -128,16 +130,22 @@ def main() -> None:
     currentHash["hashes"]["pyproject"] = getHash("./pyproject.toml")
     currentHash["hashes"]["lock"] = getHash("./uv.lock")
 
+    freshHash: bool = False
+
     if uvHashPath.exists():
         lastHash: dict[str, Any] = loadToml(uvHashPath).get("hashes")
         if currentHash["hashes"] != lastHash:
             with open(uvHashPath, "w") as file:
                 dumpHashes(currentHash, file)
-            dependencies(minify=minification)
+            dependencies()
+            freshHash = True
+        else:
+            freshHash = False
     else:
         with open(uvHashPath, "x") as file:
             dumpHashes(currentHash, file)
-        dependencies(minify=minification)
+        dependencies()
+        freshHash = True
 
     bundleFiles(
         sourceDirectory,
@@ -145,6 +153,7 @@ def main() -> None:
         outputFileName,
         compressionLevel,
         minification,
+        freshHash,
     )
     endTime = perf_counter()
 
