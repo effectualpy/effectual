@@ -41,7 +41,7 @@ def bundleFiles(
     ) as bundler:
         cachePath: Path = Path("./.effectual_cache/cachedPackages")
         if cachePath.exists():
-            if os.listdir(cachePath):
+            if Path.iterdir(cachePath):
                 totalSize: int = int(0)
                 for cachedFile in cachePath.rglob("*"):
                     if cachedFile.is_dir() and not any(cachedFile.iterdir()):

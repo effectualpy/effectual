@@ -22,6 +22,7 @@ def bundle(sourceDirectory: Path, outputFile: Path) -> None:
         for pyFile in sourceDirectory.rglob("*.py"):
             print(f"{tagColor('bundling')}   || {pyFile.name} {fileColor(pyFile)}")
             bundler.write(pyFile, arcname=pyFile.name)
+
     endTime = time.perf_counter()
 
     print(completeColor(f"Completed in {endTime - startTime:.4f}s"))
