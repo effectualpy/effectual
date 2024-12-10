@@ -38,6 +38,7 @@ def main() -> None:
 
     outputFile: Path = devBundlePath / outputFileName
 
+    bundle(sourceDirectory, outputFile)
     runCommand = subprocess.Popen(["uv", "run", outputFile], shell=True)
 
     for change in watch(sourceDirectory):
