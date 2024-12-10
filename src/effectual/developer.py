@@ -4,7 +4,7 @@ import zipfile
 from pathlib import Path
 from typing import Any
 
-from watchfiles import run_process
+from watchfiles import watch
 
 from .colors import completeColor, fileColor, tagColor
 from .config import loadConfig
@@ -38,13 +38,14 @@ def main() -> None:
 
     outputFile: Path = devBundlePath / outputFileName
 
-    run_process(sourceDirectory, target=runCommand, args=(sourceDirectory, outputFile))
+    runCommand = subprocess.Popen(["uv", "run", outputFile], shell=True)
 
-
-def runCommand(sourceDirectory: Path, outputFile: Path) -> None:
-    print(f"{tagColor('reloaded')}   || file change detected")
-    bundle(sourceDirectory, outputFile)
-    subprocess.Popen(["uv", "run", outputFile], shell=True)
+    for change in watch(sourceDirectory):
+        print(f"{tagColor('reloaded')}   || file change detected")
+        runCommand.kill()
+        runCommand.wait()
+        bundle(sourceDirectory, outputFile)
+        runCommand = subprocess.Popen(["uv", "run", outputFile], shell=True)
 
 
 if __name__ == "__main__":
