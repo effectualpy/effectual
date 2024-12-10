@@ -1,11 +1,10 @@
+import hashlib
 import os
 import shutil
 import zipfile
 from pathlib import Path
 from time import perf_counter
 from typing import Any
-
-from watch_lite import getHash
 
 from .colors import completeColor, fileColor, folderColor, tagColor
 from .config import dumpHashes, loadConfig, loadToml
@@ -97,6 +96,20 @@ def dependencies() -> None:
             os.system(
                 f'uv pip install "{key}" {argumentString} --target {pathToInstallTo}'
             )
+
+
+def getHash(filePath: Path) -> str:
+    """Gets the hash of a single file
+
+    Args:
+        filePath (Path): Path to the file
+
+    Returns:
+        str: String of the hash
+    """
+    with open(filePath, "rb") as file:
+        fileHash = hashlib.sha1(file.read()).hexdigest()
+    return fileHash
 
 
 def main() -> None:
