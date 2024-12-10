@@ -49,7 +49,8 @@ def bundleFiles(
                     totalSize += cachedFile.stat().st_size
                     stringCachedFile = str(cachedFile)
                     if (
-                        cachedFile.suffix in (".pyc", ".pyd", ".exe", ".typed")
+                        cachedFile.suffix
+                        in (".pyc", ".pyd", "pyi", ".exe", ".typed", ".so")
                         or "__pycache__" in stringCachedFile
                         or ".dist-info" in stringCachedFile
                         or ".lock" in stringCachedFile

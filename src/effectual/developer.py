@@ -54,7 +54,7 @@ def main() -> None:
             bundle(sourceDirectory, outputFile)
             runCommand = subprocess.Popen(["uv", "run", outputFile], shell=True)
         else:
-            time.sleep(0.1)
+            time.sleep(1)
 
 
 if __name__ == "__main__":
