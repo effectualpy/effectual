@@ -13,7 +13,11 @@ Sometimes you want a single portable python file without having to make a platfo
 
 # Setup
 
-If you haven't already, run:
+First make sure you have [uv installed](https://docs.astral.sh/uv/getting-started/installation/#installation-methods) and updated:
+
+    uv self update
+
+Furthermore if you haven't already created a project run:
 
     uv init
 
@@ -34,6 +38,10 @@ compressionLevel = 5
 ```
 
 Note you must have a \_\_main\_\_.py entrypoint for this to work
+
+## Template
+
+If you want a simple minimal setup process then just use the [effectual-template](https://github.com/effectualpy/effectual-template)
 
 # Bundling
 

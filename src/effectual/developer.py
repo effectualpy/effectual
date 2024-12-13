@@ -41,7 +41,7 @@ def main() -> None:
     bundle(sourceDirectory, outputFile)
     runCommand = subprocess.Popen(["uv", "run", outputFile], shell=True)
 
-    for change in watch(sourceDirectory):
+    for change in watch(sourceDirectory, debounce=50):
         print(f"{tagColor('reloaded')}   || file change detected")
         runCommand.kill()
         runCommand.wait()
