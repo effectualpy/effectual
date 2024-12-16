@@ -65,8 +65,9 @@ This is like what what [Rollup](https://rollupjs.org/) does for vite
 
 - [Treeshaking](https://webpack.js.org/guides/tree-shaking/)
 - Rewriting some time critical parts in Rust 🚀🦀
-- Cross platform compatibility
-- Plugin and loader system
+- Cross platform compatibility (multiple output bundles)
+- Bundle python version shebang and bytecode compilation
+- Plugin and loader system (like rollup and webpack)
 
 # Contributions
 
