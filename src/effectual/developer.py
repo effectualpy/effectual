@@ -1,3 +1,5 @@
+import os
+import signal
 import subprocess
 import time
 import zipfile
@@ -41,12 +43,20 @@ def main() -> None:
     bundle(sourceDirectory, outputFile)
     runCommand = subprocess.Popen(["uv", "run", outputFile], shell=True)
 
-    for change in watch(sourceDirectory, debounce=50):
+    pidSet: set = set()
+
+    for change in watch(sourceDirectory, debounce=600):
+        print(pidSet)
         print(f"{tagColor('reloaded')}   || file change detected")
-        runCommand.kill()
-        runCommand.wait()
+        for pid in pidSet.copy():
+            try:
+                os.kill(pid, signal.SIGTERM)
+            except OSError:
+                pass
+            pidSet.remove(pid)
         bundle(sourceDirectory, outputFile)
         runCommand = subprocess.Popen(["uv", "run", outputFile], shell=True)
+        pidSet.add(runCommand.pid)
 
 
 if __name__ == "__main__":
