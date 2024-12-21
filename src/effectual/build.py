@@ -41,11 +41,17 @@ def bundleFiles(
         cachePath: Path = Path("./.effectual_cache/cachedPackages")
         if cachePath.exists():
             if Path.iterdir(cachePath):
-                totalSize: int = int(0)
+                totalSize: int = sum(
+                    cachedFile.stat().st_size
+                    for cachedFile in cachePath.rglob("*")
+                    if cachedFile.is_file()
+                )
+                print(
+                    f"{tagColor('bundling')}   || uv dependencies {folderColor(totalSize)}"  # noqa: E501
+                )
                 for cachedFile in cachePath.rglob("*"):
                     if cachedFile.is_dir() and not any(cachedFile.iterdir()):
                         continue
-                    totalSize += cachedFile.stat().st_size
                     stringCachedFile = str(cachedFile)
                     if (
                         cachedFile.suffix
@@ -60,10 +66,6 @@ def bundleFiles(
                             minifyFile(cachedFile)
                         arcName: str = str(cachedFile.relative_to(cachePath))
                         bundler.write(cachedFile, arcname=arcName)
-
-                print(
-                    f"{tagColor('bundling')}   || uv dependencies {folderColor(totalSize)}"  # noqa: E501
-                )
 
         for pyFile in sourceDirectory.rglob("*.py"):
             print(f"{tagColor('bundling')}   || {pyFile.name} {fileColor(pyFile)}")
