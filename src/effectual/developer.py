@@ -43,10 +43,9 @@ def main() -> None:
     bundle(sourceDirectory, outputFile)
     runCommand = subprocess.Popen(["uv", "run", outputFile], shell=True)
 
-    pidSet: set = set()
+    pidSet: set[Any] = set()
 
     for change in watch(sourceDirectory, debounce=600):
-        print(pidSet)
         print(f"{tagColor('reloaded')}   || file change detected")
         for pid in pidSet.copy():
             try:

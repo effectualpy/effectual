@@ -143,8 +143,8 @@ def main() -> None:
 
     Path("./.effectual_cache/").mkdir(parents=True, exist_ok=True)
     currentHash["hashes"] = dict()
-    currentHash["hashes"]["pyproject"] = getHash("./pyproject.toml")
-    currentHash["hashes"]["lock"] = getHash("./uv.lock")
+    currentHash["hashes"]["pyproject"] = getHash(Path("./pyproject.toml"))
+    currentHash["hashes"]["lock"] = getHash(Path("./uv.lock"))
 
     freshHash: bool = False
 
