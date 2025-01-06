@@ -27,7 +27,7 @@ jobs:
 
             # Step 4: Copy the dist directory from the container
             - name: Copy dist from container
-              run: docker cp effectual:/effectual/dist ./dist
+              run: docker cp effectual:/effectual/dist .
 
             # Step 5: Stop and remove the container
             - name: Stop and remove Docker container
