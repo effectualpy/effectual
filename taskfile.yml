@@ -3,11 +3,13 @@ version: "3.17"
 tasks:
 
     dist:
+        desc: Builds and then allows for publishing
         deps: [build]
         cmds:
             - uv publish
 
     build:
+        desc: Builds distributable tar.gz and wheel files using docker
         cmds:
             - task: check
             - docker build -t effectual .
@@ -18,18 +20,22 @@ tasks:
             - docker rm effectual
 
     check:
+        desc: Formats and lints python source files
         deps: [lint, format]
 
     format:
+        desc: Formats python source files
         cmds:
             - uv run ruff format --config pyproject.toml
 
     lint:
+        desc: Lints python source files
         cmds:
             - uv run ruff check --config pyproject.toml
             
     
     type:
+        desc: Type checks python source files
         cmds:
             - uv run mypy src/effectual/*.py
     

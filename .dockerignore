@@ -4,8 +4,7 @@ LICENSE
 .gitignore
 taskfile.yml
 uv.lock 
-# ^This should be generated in the docker image as it contains platform specific 
-# packages for the host machine
+# ^This should be generated in the docker container
 
 # vscode specific
 
