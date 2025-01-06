@@ -46,6 +46,18 @@ dev = [
     "ruff>=0.8.1",
 ]
 
+[tool.hatch.build]
+reproducible = true
+
+[tool.hatch.build.targets.wheel]
+exclude = ["ruff"]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "ruff",
+    "*.md"
+]
+
 [tool.ruff]
 
 include = ["pyproject.toml", "src/**/*.py"]

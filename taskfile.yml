@@ -3,12 +3,19 @@ version: "3.17"
 tasks:
 
     dist:
+        deps: [build]
         cmds:
-            - uv sync
-            - uv lock --upgrade
-            - task: check
-            - uv build
             - uv publish
+
+    build:
+        cmds:
+            - task: check
+            - docker build -t effectual .
+            - docker create --name effectual effectual
+            - docker start effectual
+            - docker cp effectual:effectual/dist/ .
+            - docker stop effectual
+            - docker rm effectual
 
     check:
         deps: [lint, format]
@@ -25,3 +32,11 @@ tasks:
     type:
         cmds:
             - uv run mypy src/effectual/*.py
+    
+    setup:
+        desc: Installs dependencies and creates venv
+        cmds:
+            - uv python install 3.11
+            - uv venv --python 3.11
+            - uv lock
+            - uv sync

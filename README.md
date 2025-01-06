@@ -72,3 +72,23 @@ This is like what what [Rollup](https://rollupjs.org/) does for vite
 # Contributions
 
 All contributions are welcome, I'm not the best in the world at project management but if you think you can add or improve anything please send over a pull request
+
+## Building the project from source
+
+### Requirements
+
+To build the project from source you need a few tools:
+
+1) [uv](https://docs.astral.sh/uv/#getting-started)
+2) [TaskFile](https://taskfile.dev/installation/)
+3) [Docker](https://docs.docker.com/engine/install/)
+
+### Process
+
+1) CD to your effectual directory and run:
+
+    task setup
+
+2) Then to build an distributable tar.gz and wheel:
+
+    task build
