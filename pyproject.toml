@@ -1,6 +1,6 @@
 [project]
 name = "effectual"
-version = "0.7.8"
+version = "0.7.9"
 description = "A python package/script bundler"
 readme = "README.md"
 license = "MIT"
@@ -26,7 +26,6 @@ dependencies = [
     "click>=8.1.7",
     "python-minifier>=2.11.3",
     "rtoml>=0.11.0",
-    "ruff>=0.8.0",
     "termcolor>=2.4.0",
     "watchfiles>=0.24.0",
 ]
