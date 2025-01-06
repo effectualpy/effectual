@@ -29,7 +29,7 @@ jobs:
         env:
           UV_INDEX_AUTH: ${{ secrets.PYPI_TOKEN }}
         run: |
-          docker exec effectual uv uv publish --token=${{ secrets.PYPI_TOKEN }} dist/*
+          docker exec effectual uv publish --token=${{ secrets.PYPI_TOKEN }} dist/*
 
       # Stop and remove the container
       - name: Stop and remove Docker container
