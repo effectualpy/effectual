@@ -10,43 +10,28 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            # Step 1: Checkout the repository
+            # Checkout the repository
             - name: Checkout code
               uses: actions/checkout@v3
 
-            # Step 2: Set up Docker and build the image
+            # Set up Docker and build the image
             - name: Build Docker image
               run: docker build -t effectual .
 
-            # Step 3: Create and start the container
+            # Create and start the container
             - name: Create Docker container
               run: docker create --name effectual effectual
 
             - name: Start Docker container
               run: docker start effectual
 
-            # Step 4: Copy the dist directory from the container
-            - name: Copy dist from container
-              run: docker cp effectual:/effectual/dist .
+            - name: Publish to PyPi
+              env:
+                    UV_INDEX_AUTH: ${{ secrets.PYPI_TOKEN }}
+              run: uv uv publish --token=${{ secrets.PYPI_TOKEN }} dist/*
 
-            # Step 5: Stop and remove the container
+            # Stop and remove the container
             - name: Stop and remove Docker container
               run: |
                   docker stop effectual
                   docker rm effectual
-
-            # Step 6: Set up Python and install Hatch
-            - name: Set up Python
-              uses: actions/setup-python@v4
-              with:
-                  python-version: "3.11"
-
-            - name: Install Hatch
-              run: pip install hatch
-
-            # Step 7: Publish to PyPI using Hatch
-            - name: Publish to PyPI
-              env:
-                  HATCH_INDEX_USER: __token__
-                  HATCH_INDEX_AUTH: ${{ secrets.PYPI_TOKEN }}
-              run: hatch publish
