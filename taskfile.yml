@@ -6,18 +6,13 @@ tasks:
         desc: Builds and then allows for publishing
         deps: [build]
         cmds:
-            - uv publish
+            - uv run hatch publish -y
 
     build:
-        desc: Builds distributable tar.gz and wheel files using docker
+        desc: Builds distributable tar.gz and wheel files
         cmds:
             - task: check
-            - docker build -t effectual .
-            - docker create --name effectual effectual
-            - docker start effectual
-            - docker cp effectual:effectual/dist/ .
-            - docker stop effectual
-            - docker rm effectual
+            - uv build
 
     check:
         desc: Formats and lints python source files
@@ -35,9 +30,15 @@ tasks:
             
     
     type:
-        desc: Type checks python source files
+        desc: Type checks Python source files
         cmds:
             - uv run mypy src/effectual/*.py
+    
+    bump:
+        desc: Bumps the versions of Python packages
+        cmds:
+            - uv lock --upgrade
+            - uv sync
     
     setup:
         desc: Installs dependencies and creates venv

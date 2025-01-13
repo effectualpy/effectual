@@ -1,6 +1,6 @@
 [project]
 name = "effectual"
-version = "0.7.10"
+version = "0.7.11"
 description = "A python package/script bundler"
 readme = "README.md"
 license = "MIT"
@@ -42,6 +42,7 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
+    "hatch>=1.14.0",
     "mypy>=1.13.0",
     "ruff>=0.8.1",
 ]

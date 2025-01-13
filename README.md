@@ -77,11 +77,10 @@ All contributions are welcome, I'm not the best in the world at project manageme
 
 ### Requirements
 
-To build the project from source you need a few tools:
+To build the project from source you need two tools:
 
 1) [uv](https://docs.astral.sh/uv/#getting-started)
 2) [TaskFile](https://taskfile.dev/installation/)
-3) [Docker](https://docs.docker.com/engine/install/)
 
 ### Process
 
