@@ -101,7 +101,7 @@ def dependencies() -> None:
 
 
 def getHash(filePath: Path) -> str:
-    """Gets the hash of a single file
+    """Creates an MD5 Hash from a file
 
     Args:
         filePath (Path): Path to the file
@@ -110,7 +110,7 @@ def getHash(filePath: Path) -> str:
         str: String of the hash
     """
     with open(filePath, "rb") as file:
-        fileHash = hashlib.sha1(file.read()).hexdigest()
+        fileHash = hashlib.md5(file.read()).hexdigest()
     return fileHash
 
 
@@ -146,7 +146,7 @@ def main() -> None:
     currentHash["hashes"]["pyproject"] = getHash(Path("./pyproject.toml"))
     currentHash["hashes"]["lock"] = getHash(Path("./uv.lock"))
 
-    freshHash: bool = False
+    freshHash: bool = True  # Whether or not to re-optimize deps
 
     if uvHashPath.exists():
         lastHash: dict[str, Any] = loadToml(uvHashPath).get("hashes")
@@ -154,14 +154,12 @@ def main() -> None:
             with open(uvHashPath, "w") as file:
                 dumpHashes(currentHash, file)
             dependencies()
-            freshHash = True
         else:
             freshHash = False
     else:
         with open(uvHashPath, "x") as file:
             dumpHashes(currentHash, file)
         dependencies()
-        freshHash = True
 
     bundleFiles(
         sourceDirectory,
@@ -176,5 +174,5 @@ def main() -> None:
     print(completeColor(f"Completed in {endTime - startTime:.4f}s"))
 
 
-if "__main__" in __name__:
+if "__main__" == __name__:
     main()
