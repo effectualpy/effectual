@@ -1,4 +1,4 @@
-import io
+from io import TextIOWrapper
 from pathlib import Path
 from typing import Any
 
@@ -37,7 +37,9 @@ def loadConfig(configPath: str = "./pyproject.toml") -> dict[Any, Any]:
         dict: Dictionary containing effectual config
     """
     configData: dict[str, Any] = loadToml(configPath)
-    if configData is None:
+    try:
+        configData = configData["tool"]["effectual"]
+    except KeyError:
         configData = {
             "sourceDirectory": "./src/",
             "outputDirectory": "./dist/",
@@ -45,13 +47,11 @@ def loadConfig(configPath: str = "./pyproject.toml") -> dict[Any, Any]:
             "minification": True,
             "compressionLevel": 5,
         }
-    else:
-        configData = configData.get("tool").get("effectual")
 
     return configData
 
 
-def dumpHashes(hashesToDump: dict[str, dict[str, str]], file: io.TextIOWrapper) -> None:
+def dumpHashes(hashesToDump: dict[str, dict[str, str]], file: TextIOWrapper) -> None:
     """Dumps hashes in a specific format to a toml file
 
     Args:

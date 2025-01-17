@@ -1,6 +1,4 @@
-import hashlib
 import os
-import shutil
 import zipfile
 from pathlib import Path
 from time import perf_counter
@@ -8,6 +6,7 @@ from typing import Any
 
 from .colors import completeColor, fileColor, folderColor, tagColor
 from .config import dumpHashes, loadConfig, loadToml
+from .lib import getHash
 from .transformations import minifyFile, minifyToString
 
 
@@ -91,27 +90,13 @@ def dependencies() -> None:
         argumentString: str = " ".join(arguments)
 
         if Path(pathToInstallTo).exists():
-            shutil.rmtree(pathToInstallTo)
+            __import__("shutil").rmtree(pathToInstallTo)
 
         for key in packages:
             print(f"{tagColor('installing')} || {key}")
             os.system(
                 f'uv pip install "{key}" {argumentString} --target {pathToInstallTo}'
             )
-
-
-def getHash(filePath: Path) -> str:
-    """Creates an MD5 Hash from a file
-
-    Args:
-        filePath (Path): Path to the file
-
-    Returns:
-        str: String of the hash
-    """
-    with open(filePath, "rb") as file:
-        fileHash = hashlib.md5(file.read()).hexdigest()
-    return fileHash
 
 
 def main() -> None:
