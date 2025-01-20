@@ -86,8 +86,9 @@ To build the project from source you need two tools:
 
 1) CD to your effectual directory and run:
 
-    task setup
+        task setup
+
 
 2) Then to build an distributable tar.gz and wheel:
 
-    task build
+        task build
