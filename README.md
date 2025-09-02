@@ -25,7 +25,7 @@ Then to install effectual run:
 
     uv add effectual --dev
 
-Finally add the following lines to your pyproject.toml and configure to your hearts desire
+Finally add the following lines to your pyproject.toml and configure to your heart's desire
 
 ```TOML
 [tool.effectual]
@@ -66,12 +66,12 @@ This is like what what [Rollup](https://rollupjs.org/) does for vite
 - [Treeshaking](https://webpack.js.org/guides/tree-shaking/)
 - Rewriting some time critical parts in Rust 🚀🦀
 - Cross platform compatibility (multiple output bundles)
-- Bundle python version shebang and bytecode compilation
+- Bundling python version shebang and bytecode compilation
 - Plugin and loader system (like rollup and webpack)
 
 # Contributions
 
-All contributions are welcome, I'm not the best in the world at project management but if you think you can add or improve anything please send over a pull request
+All contributions are welcome, I'm not the best in the world at project management but if you think you can add a feature or improve anything please send over a pull request!
 
 ## Building the project from source
 
@@ -89,6 +89,6 @@ To build the project from source you need two tools:
         task setup
 
 
-2) Then to build an distributable tar.gz and wheel:
+2) Then to build a distributable tar.gz and wheel:
 
         task build
