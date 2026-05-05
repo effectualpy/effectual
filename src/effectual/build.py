@@ -5,9 +5,8 @@ from time import perf_counter
 from typing import Any
 
 from .colors import completeColor, fileColor, folderColor, tagColor
-from .config import dumpHashes, loadConfig, loadToml
-from .lib import getHash
-from .transformations import minifyFile, minifyToString
+from .minification import minifyFile, minifyToString
+from .tomlHash import dumpHashes, getHash, loadConfig, loadToml
 
 
 def bundleFiles(
@@ -35,7 +34,7 @@ def bundleFiles(
         outputPath,
         "w",
         compresslevel=compressionLevel,
-        compression=zipfile.ZIP_DEFLATED,
+        compression=zipfile.ZIP_DEFLATED,  # Other forms of compression aren't supported
     ) as bundler:
         cachePath: Path = Path("./.effectual_cache/cachedPackages")
         if cachePath.exists():
@@ -58,6 +57,7 @@ def bundleFiles(
                         or "__pycache__" in stringCachedFile
                         or ".dist-info" in stringCachedFile
                         or ".lock" in stringCachedFile
+                        # Removes precompiled files alongside binaries and bloat
                     ):
                         continue
                     else:
@@ -79,6 +79,7 @@ def bundleFiles(
 
 def dependencies() -> None:
     """Installs relevant dependencies"""
+    # TODO: Check if program is online
     packages: list[str] = (
         loadToml("./pyproject.toml").get("project").get("dependencies")
     )
@@ -90,7 +91,7 @@ def dependencies() -> None:
         argumentString: str = " ".join(arguments)
 
         if Path(pathToInstallTo).exists():
-            __import__("shutil").rmtree(pathToInstallTo)
+            __import__("shutil").rmtree(pathToInstallTo)  # Lazy import
 
         for key in packages:
             print(f"{tagColor('installing')} || {key}")

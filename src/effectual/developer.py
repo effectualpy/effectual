@@ -9,7 +9,7 @@ from typing import Any
 from watchfiles import watch
 
 from .colors import completeColor, fileColor, tagColor
-from .config import loadConfig
+from .tomlHash import loadConfig
 
 
 def bundle(sourceDirectory: Path, outputFile: Path) -> None:
@@ -47,7 +47,7 @@ def main() -> None:
 
     for change in watch(sourceDirectory, debounce=600):
         print(f"{tagColor('reloaded')}   || file change detected")
-        for pid in pidSet.copy():
+        for pid in pidSet.copy():  # Tries killing previous instance
             try:
                 os.kill(pid, signal.SIGTERM)
             except OSError:

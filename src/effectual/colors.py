@@ -12,7 +12,7 @@ def fileColor(filePath: Path) -> str:
     Returns:
         str: Output string
     """
-    return colored(f"{str(round(filePath.stat().st_size / 1024, 3))}kB", "yellow")
+    return colored(f"{str(round(filePath.stat().st_size / 1024, 1))}kB", "yellow")
 
 
 def tagColor(nameOfTag: str) -> str:

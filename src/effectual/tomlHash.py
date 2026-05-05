@@ -1,3 +1,4 @@
+from hashlib import md5
 from io import TextIOWrapper
 from pathlib import Path
 from typing import Any
@@ -40,6 +41,7 @@ def loadConfig(configPath: str = "./pyproject.toml") -> dict[Any, Any]:
     try:
         configData = configData["tool"]["effectual"]
     except KeyError:
+        # TODO: Add Printed Warning here that defaults are being used
         configData = {
             "sourceDirectory": "./src/",
             "outputDirectory": "./dist/",
@@ -59,3 +61,17 @@ def dumpHashes(hashesToDump: dict[str, dict[str, str]], file: TextIOWrapper) -> 
         file (_type_): File object
     """
     rtoml.dump(hashesToDump, file, pretty=False)
+
+
+def getHash(filePath: Path) -> str:
+    """Creates an MD5 Hash from a file
+
+    Args:
+        filePath (Path): Path to the file
+
+    Returns:
+        str: String of the hash
+    """
+    with open(filePath, "rb") as file:
+        fileHash = md5(file.read()).hexdigest()
+    return fileHash
