@@ -10,8 +10,15 @@ Sometimes you want a single portable python file without having to make a platfo
 
 - The python package requires access to specific files like [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter/wiki/Packaging#windows-pyinstaller-auto-py-to-exe) and [Pillow](https://python-pillow.org/)
 - Incredibly version specific code, for example something that won't run on a slightly different python version or operating system
+- The output bundle needs to include packages that aren't mostly written in python
 
 # Setup
+
+## Template
+
+If you want a simple minimal setup process then just use the [effectual-template](https://github.com/effectualpy/effectual-template)
+
+## DIY
 
 First make sure you have [uv installed](https://docs.astral.sh/uv/getting-started/installation/#installation-methods) and updated:
 
@@ -38,10 +45,6 @@ compressionLevel = 5
 ```
 
 Note you must have a \_\_main\_\_.py entrypoint for this to work
-
-## Template
-
-If you want a simple minimal setup process then just use the [effectual-template](https://github.com/effectualpy/effectual-template)
 
 # Bundling
 
