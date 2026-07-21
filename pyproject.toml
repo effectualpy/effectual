@@ -1,6 +1,6 @@
 [project]
 name = "effectual"
-version = "0.8.9"
+version = "0.8.10"
 description = "A python package/script bundler"
 readme = "README.md"
 license = "MIT"
@@ -95,8 +95,7 @@ exclude = [
     "venv",
 ]
 
-# Same as Black.
-line-length = 88
+line-length = 90
 indent-width = 4
 
 # Assume Python 3.11
