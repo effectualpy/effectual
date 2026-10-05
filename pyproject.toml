@@ -1,6 +1,6 @@
 [project]
 name = "effectual"
-version = "0.8.10"
+version = "0.8.11"
 description = "A python package/script bundler"
 readme = "README.md"
 license = "MIT"
