@@ -134,7 +134,7 @@ def main() -> None:
     currentHash["hashes"]["pyproject"] = getHash(Path("./pyproject.toml"))
     currentHash["hashes"]["lock"] = getHash(Path("./uv.lock"))
 
-    freshHash: bool = True  # Whether or not to re-optimize deps
+    freshHash: bool = True  # Whether or not to re-optimise deps
 
     if uvHashPath.exists():
         lastHash: dict[str, Any] = loadToml(uvHashPath).get("hashes")

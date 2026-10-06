@@ -32,7 +32,7 @@ tasks:
     type:
         desc: Type checks Python source files
         cmds:
-            - uv run mypy src/effectual/*.py
+            - uv run ty check
     
     bump:
         desc: Bumps the versions of Python packages

@@ -30,6 +30,14 @@ dependencies = [
     "watchfiles>=0.24.0",
 ]
 
+[dependency-groups]
+
+dev = [
+    "hatch>=1.14.0",
+    "ruff>=0.8.1",
+    "ty>=0.0.84",
+]
+
 [project.urls]
 Homepage = "https://github.com/effectualpy/effectual"
 
@@ -39,13 +47,6 @@ efec = "effectual:main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
-
-[dependency-groups]
-dev = [
-    "hatch>=1.14.0",
-    "mypy>=1.13.0",
-    "ruff>=0.8.1",
-]
 
 [tool.hatch.build]
 reproducible = true
@@ -147,22 +148,6 @@ docstring-code-format = false
 # enabled.
 docstring-code-line-length = "dynamic"
 
-[tool.mypy]
+[tool.ty.src]
 
-disable_error_code = "name-defined"
-
-warn_unused_configs = true
-warn_redundant_casts = true
-warn_unused_ignores = true
-
-strict_equality = true
-
-check_untyped_defs = true
-
-disallow_subclassing_any = true
-disallow_untyped_decorators = true
-disallow_any_generics = true
-
-disallow_untyped_calls = true
-disallow_incomplete_defs = true
-disallow_untyped_defs = true
+include = ["./src/effectual"]
