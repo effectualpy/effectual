@@ -81,7 +81,7 @@ def dependencies() -> None:
     """Installs relevant dependencies"""
     try:
         packages: list[str] = (
-            loadToml("./pyproject.toml").get("project").get("dependencies")
+            loadToml("./pyproject.toml").get("project").get("dependencies")  # ty: ignore[unresolved-attribute]
         )
 
         if len(packages) != 0:
@@ -137,7 +137,7 @@ def main() -> None:
     freshHash: bool = True  # Whether or not to re-optimise deps
 
     if uvHashPath.exists():
-        lastHash: dict[str, Any] = loadToml(uvHashPath).get("hashes")
+        lastHash: dict[str, Any] = loadToml(uvHashPath).get("hashes")  # ty: ignore[invalid-assignment]
         if currentHash["hashes"] != lastHash:
             with open(uvHashPath, "w") as file:
                 dumpHashes(currentHash, file)

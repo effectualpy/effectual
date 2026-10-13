@@ -3,9 +3,9 @@ version: "3.17"
 tasks:
 
     dist:
-        desc: Builds and then allows for publishing
-        deps: [build]
+        desc: Runs the build command and then publishes artifacts
         cmds:
+            - task: build
             - uv run hatch publish -y
 
     build:
@@ -15,8 +15,11 @@ tasks:
             - uv build
 
     check:
-        desc: Formats and lints python source files
-        deps: [lint, format]
+        desc: Type Checks, Lints and Formats Python source files
+        cmds: 
+            - task: type
+            - task: lint 
+            - task: format
 
     format:
         desc: Formats python source files
@@ -46,4 +49,4 @@ tasks:
             - uv python install 3.11
             - uv venv --python 3.11
             - uv lock
-            - uv sync
+            - uv sync --no-install-project

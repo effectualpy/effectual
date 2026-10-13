@@ -44,7 +44,7 @@ minification = true
 compressionLevel = 5
 ```
 
-Note you must have a \_\_main\_\_.py entrypoint for this to work
+Note you must have a \_\_main\_\_.py entrypoint in the source directory for this to work
 
 # Bundling
 
@@ -67,10 +67,11 @@ This is like what what [Rollup](https://rollupjs.org/) does for vite
 # To be added
 
 - [Treeshaking](https://webpack.js.org/guides/tree-shaking/)
-- Rewriting some time critical parts in Rust 🚀🦀
+- Rewriting some time critical parts in Rust
 - Cross platform compatibility (multiple output bundles)
 - Bundling python version shebang and bytecode compilation
 - Plugin and loader system (like rollup and webpack)
+- Python based config file for more granular builds rather then using the pyproject.toml
 
 # Contributions
 
@@ -87,7 +88,7 @@ To build the project from source you need two tools:
 
 ### Process
 
-1) CD to your effectual directory and run:
+1) CD to project directory and run:
 
         task setup
 
