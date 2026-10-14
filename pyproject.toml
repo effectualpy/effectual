@@ -99,7 +99,6 @@ exclude = [
 line-length = 90
 indent-width = 4
 
-# Assume Python 3.11
 target-version = "py311"
 
 [tool.ruff.lint]
@@ -122,6 +121,7 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 convention = "google"
 
 [tool.ruff.format]
+
 # Like Black, use double quotes for strings.
 quote-style = "double"
 
@@ -132,7 +132,7 @@ indent-style = "space"
 skip-magic-trailing-comma = false
 
 # Like Black, automatically detect the appropriate line ending.
-line-ending = "auto"
+line-ending = "lf"
 
 # Enable auto-formatting of code examples in docstrings. Markdown,
 # reStructuredText code/literal blocks and doctests are all supported.
