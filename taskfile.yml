@@ -49,4 +49,4 @@ tasks:
             - uv python install 3.11
             - uv venv --python 3.11
             - uv lock
-            - uv sync --no-install-project
+            - uv sync
