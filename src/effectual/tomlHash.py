@@ -1,9 +1,9 @@
-from hashlib import md5
 from io import TextIOWrapper
 from pathlib import Path
 from typing import Any
 
 import rtoml
+from blake3 import blake3
 
 
 def loadToml(tomlFile: str | Path) -> dict[str, Any]:
@@ -64,7 +64,7 @@ def dumpHashes(hashesToDump: dict[str, dict[str, str]], file: TextIOWrapper) -> 
 
 
 def getHash(filePath: Path) -> str:
-    """Creates an MD5 Hash from a file
+    """Creates a Blake3 Hash from a file
 
     Args:
         filePath (Path): Path to the file
@@ -73,5 +73,5 @@ def getHash(filePath: Path) -> str:
         str: String of the hash
     """
     with open(filePath, "rb") as file:
-        fileHash = md5(file.read()).hexdigest()
+        fileHash = blake3(file.read()).hexdigest()
     return fileHash

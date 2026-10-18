@@ -1,6 +1,6 @@
 [project]
 name = "effectual"
-version = "0.8.13"
+version = "0.8.14"
 description = "A python package/script bundler"
 readme = "README.md"
 license = "MIT"
@@ -22,6 +22,7 @@ environments = [
 ]
 
 dependencies = [
+    "blake3>=1.0.11",
     "click>=8.1.7",
     "python-minifier>=2.11.3",
     "rtoml>=0.11.0",
