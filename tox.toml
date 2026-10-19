@@ -6,3 +6,4 @@ description = "Runs tests with pytest"
 deps = [
     "pytest>=9",
 ]
+commands = [["pytest", { replace = "posargs", default = ["tests"], extend = true }]]

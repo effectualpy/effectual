@@ -9,9 +9,10 @@ tasks:
             - uv run hatch publish -y
 
     build:
-        desc: Builds distributable tar.gz and wheel files
+        desc: Builds distributable tar.gz and wheel files and also runs checks/tests
         cmds:
             - task: check
+            - task: test
             - uv build
 
     check:
@@ -36,6 +37,11 @@ tasks:
         desc: Type checks Python source files
         cmds:
             - uv run ty check
+    
+    test:
+        desc: Runs tox which hence runs pytests
+        cmds:
+            - uv run tox
     
     bump:
         desc: Bumps the versions of Python packages
