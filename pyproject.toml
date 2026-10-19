@@ -34,7 +34,10 @@ dependencies = [
 
 dev = [
     "hatch>=1.14.0",
+    "pytest>=9.1.1",
     "ruff>=0.8.1",
+    "tox>=4.67.1",
+    "tox-uv>=1.37.0",
     "ty>=0.0.84",
 ]
 
@@ -52,14 +55,16 @@ build-backend = "hatchling.build"
 reproducible = true
 
 [tool.hatch.build.targets.wheel]
-exclude = [".editorconfig", "taskfile.yml", "README.md", "uv.lock", "pyproject.toml"]
+exclude = [".editorconfig", "taskfile.yml", "README.md", "uv.lock", "pyproject.toml", 
+    "tox.toml", "./tests"]
 
 [tool.hatch.build.targets.sdist]
-exclude = [".editorconfig", "taskfile.yml", "README.md", "uv.lock", "pyproject.toml"]
+exclude = [".editorconfig", "taskfile.yml", "README.md", "uv.lock", "pyproject.toml", 
+    "tox.toml", "./tests/"]
 
 [tool.ruff]
 
-include = ["pyproject.toml", "src/**/*.py"]
+include = ["src/**/*.py", "tests/**/*.py"]
 fix = true
 cache-dir = ".ruff_cache/"
 

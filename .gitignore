@@ -10,6 +10,7 @@
 
 testing.py
 test.py
+/tests/out/bundle.pyz
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
