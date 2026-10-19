@@ -1,5 +1,7 @@
 import click
 
+from .build import bundleFiles  # noqa: F401
+
 
 @click.group()
 def main() -> None:

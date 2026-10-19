@@ -27,8 +27,9 @@ def bundleFiles(
         minification (bool): If the scripts should be minified
         freshHash (bool): Is the pyproject hash different then previously?
     """
-    outputDirectory.mkdir(parents=True, exist_ok=True)
-    outputPath: Path = outputDirectory / outputFileName
+    Path(outputDirectory).mkdir(parents=True, exist_ok=True)
+    outputPath: Path = Path(f"{outputDirectory}/{outputFileName}")
+    # TODO check for trailing slash
 
     with zipfile.ZipFile(
         outputPath,
@@ -66,7 +67,7 @@ def bundleFiles(
                         arcName: str = str(cachedFile.relative_to(cachePath))
                         bundler.write(cachedFile, arcname=arcName)
 
-        for pyFile in sourceDirectory.rglob("*.py"):
+        for pyFile in Path(sourceDirectory).rglob("*.py"):
             print(f"{tagColor('bundling')}   || {pyFile.name} {fileColor(pyFile)}")
             if minification:
                 fileContents = minifyToString(pyFile)

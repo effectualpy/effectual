@@ -64,7 +64,7 @@ exclude = [".editorconfig", "taskfile.yml", "README.md", "uv.lock", "pyproject.t
 
 [tool.ruff]
 
-include = ["pyproject.toml", "src/**/*.py"]
+include = ["src/**/*.py", "tests/**/*.py"]
 fix = true
 cache-dir = ".ruff_cache/"
 

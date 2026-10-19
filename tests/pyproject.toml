@@ -1,0 +1,9 @@
+dependencies = []
+
+[tool.effectual]
+
+sourceDirectory = "./tests/src"
+outputDirectory =  "./tests/out"
+outputFileName = "bundle.pyz"
+minification = true
+compressionLevel = 5
