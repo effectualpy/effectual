@@ -17,7 +17,6 @@ tasks:
     check:
         desc: Type Checks, Lints and Formats Python source files
         cmds:
-            - uv sync 
             - task: type
             - task: lint 
             - task: format

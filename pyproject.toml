@@ -52,13 +52,10 @@ build-backend = "hatchling.build"
 reproducible = true
 
 [tool.hatch.build.targets.wheel]
-exclude = ["ruff"]
+exclude = [".editorconfig", "taskfile.yml", "README.md", "uv.lock", "pyproject.toml"]
 
 [tool.hatch.build.targets.sdist]
-exclude = [
-    "ruff",
-    "*.md"
-]
+exclude = [".editorconfig", "taskfile.yml", "README.md", "uv.lock", "pyproject.toml"]
 
 [tool.ruff]
 
@@ -105,7 +102,7 @@ target-version = "py311"
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
 # Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
 # McCabe complexity (`C901`) by default.
-select = ["E", "F", "I", "TC", "ANN", "TYP", "PLE", "PERF", "PYI026", "PYI055", "NPY001"]
+select = ["E", "F", "I", "TC", "ANN", "TYP", "PLE", "PERF", "PYI026", "PYI055", "NPY001", "C901"]
 ignore = []
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
