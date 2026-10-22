@@ -6,19 +6,23 @@
 
 ## Why?
 
-Sometimes you want a single portable python file without having to make a platform specific executable or a dependency-less .pyz! Basically me trying to make [Vite](https://vite.dev/) for python (badly) :(
+Sometimes you want a single portable Python executable file without having to make a platform specific executable (with tools such as [pyinstaller](https://pyinstaller.org/en/stable/) or [nuitka](https://nuitka.net/)) or a .pyz file without dependencies! Basically me trying to make [Vite](https://vite.dev/) for python (badly) :(
 
 ## When not to use this
 
 - The python package requires access to specific files like [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter/wiki/Packaging#windows-pyinstaller-auto-py-to-exe) and [Pillow](https://python-pillow.org/)
 - Incredibly version specific code, for example something that won't run on a slightly different python version or operating system
-- The output bundle needs to include packages that aren't mostly written in python
+- The output bundle needs to include packages that aren't mostly written in python (such as packages written with [maturin](https://github.com/pyo3/maturin))
+
+## Is this production ready
+
+No
 
 # Setup
 
 ## Template
 
-If you want a simple minimal setup process then just use the [effectual-template](https://github.com/effectualpy/effectual-template)
+If you want minimal setup then you can use the [effectual-template](https://github.com/effectualpy/effectual-template)
 
 ## DIY
 
@@ -34,7 +38,7 @@ Then to install effectual run:
 
     uv add effectual --dev
 
-Finally add the following lines to your pyproject.toml and configure to your heart's desire
+Finally add the following lines to your pyproject.toml
 
 ```TOML
 [tool.effectual]
@@ -56,7 +60,7 @@ To bundle in dev mode use:
 
     uv run efec dev
 
-This is like what [esBuild](https://esbuild.github.io/) does for vite
+This is like what [esBuild](https://esbuild.github.io/) does for Vite
 
 ## Production
 
@@ -64,14 +68,13 @@ To build a distributable .pyz file run:
 
     uv run efec dist
 
-This is like what what [Rollup](https://rollupjs.org/) does for vite
+This is like what what [Rollup](https://rollupjs.org/) does for Vite
 
 # To be added
 
 - [Treeshaking](https://webpack.js.org/guides/tree-shaking/)
 - Rewriting some time critical parts in Rust
-- Cross platform compatibility (multiple output bundles)
-- Bundling python version shebang and bytecode compilation
+- Adding inline script metadata to all source files by default
 - Plugin and loader system (like rollup and webpack)
 - Python based config file for more granular builds rather then using the pyproject.toml
 
@@ -79,7 +82,7 @@ This is like what what [Rollup](https://rollupjs.org/) does for vite
 
 All contributions are welcome, I'm not the best in the world at project management but if you think you can add a feature or improve anything please send over a pull request!
 
-## Building the project from source
+# Building from source
 
 ### Requirements
 
