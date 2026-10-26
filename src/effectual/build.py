@@ -31,6 +31,8 @@ def bundleFiles(
     outputPath: Path = Path(f"{outputDirectory}/{outputFileName}")
     # TODO check for trailing slash
 
+    totalSize: int = int(0)
+
     with zipfile.ZipFile(
         outputPath,
         "w",
@@ -40,17 +42,13 @@ def bundleFiles(
         cachePath: Path = Path("./.effectual_cache/cachedPackages")
         if cachePath.exists():
             if any(Path.iterdir(cachePath)):
-                totalSize: int = sum(
-                    cachedFile.stat().st_size
-                    for cachedFile in cachePath.rglob("*")
-                    if cachedFile.is_file()
-                )
                 print(
-                    f"{tagColor('bundling')}   || uv dependencies {folderColor(totalSize)}"  # noqa: E501
+                    f"{tagColor('bundling')}   || uv dependencies"  # noqa: E501
                 )
                 for cachedFile in cachePath.rglob("*"):
                     if cachedFile.is_dir() and not any(cachedFile.iterdir()):
                         continue
+                    totalSize += cachedFile.stat().st_size
                     stringCachedFile = str(cachedFile)
                     if (
                         cachedFile.suffix
@@ -75,7 +73,8 @@ def bundleFiles(
             else:
                 bundler.write(pyFile, arcname=pyFile.name)
 
-    print(f"{tagColor('OUTPUT')}     || {outputFileName} {fileColor(outputPath)}")
+    print(f"{tagColor('OUTPUT')}     || {outputFileName}")
+    print(f"{folderColor(totalSize)} -> {fileColor(outputPath)}")
 
 
 def dependencies() -> None:
