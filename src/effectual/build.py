@@ -130,6 +130,11 @@ def main() -> None:
     startTime = perf_counter()
 
     Path("./.effectual_cache/").mkdir(parents=True, exist_ok=True)
+    if Path("./.effectual_cache/CACHEDIR.TAG").exists():
+        pass
+    else:
+        with open(Path("./.effectual_cache/CACHEDIR.TAG"), "x") as file:
+            file.write("Signature: 8a477f597d28d172789f06886806bc55")
     currentHash["hashes"] = dict()
     currentHash["hashes"]["pyproject"] = getHash(Path("./pyproject.toml"))
     currentHash["hashes"]["lock"] = getHash(Path("./uv.lock"))
