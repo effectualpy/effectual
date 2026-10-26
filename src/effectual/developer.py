@@ -37,8 +37,8 @@ def main() -> None:
     sourceDirectory: Path = Path(configData.get("sourceDirectory", "src/"))
     outputFileName: Path = Path(configData.get("outputFileName", "bundle.pyz"))
     devBundlePath: Path = Path("./.effectual_cache/dev/")
-    devBundlePath.mkdir(parents=True, exist_ok=True)
 
+    devBundlePath.mkdir(parents=True, exist_ok=True)
     outputFile: Path = devBundlePath / outputFileName
 
     bundle(sourceDirectory, outputFile)
@@ -48,6 +48,8 @@ def main() -> None:
     pidSet.add(runCommand.pid)  # Adds PID of runCommand to the set
 
     for change in watch(sourceDirectory, debounce=600):
+        # TODO: Also need to make sure this reloads on changes in
+        # pyproject.toml and uv.lock (effects file behaviour)
         print(f"{tagColor('reloaded')}   || file change detected")
         for pid in pidSet.copy():  # Tries killing previous instance
             try:
