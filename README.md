@@ -6,7 +6,7 @@
 
 ## Why?
 
-Sometimes you want a single portable Python executable file without having to make a platform specific executable (with tools such as [pyinstaller](https://pyinstaller.org/en/stable/) or [nuitka](https://nuitka.net/)) or a .pyz file without dependencies! Basically me trying to make [Vite](https://vite.dev/) for python (badly) :(
+Sometimes you want a single portable Python executable file without having to make a platform specific executable (with tools such as [pyinstaller](https://pyinstaller.org/en/stable/) or [nuitka](https://nuitka.net/)) or a .pyz file without dependencies
 
 ## When not to use this
 
@@ -26,7 +26,7 @@ If you want minimal setup then you can use the [effectual-template](https://gith
 
 ## DIY
 
-First make sure you have [uv installed](https://docs.astral.sh/uv/getting-started/installation/#installation-methods) and updated:
+First make sure you have [uv installed](https://docs.astral.sh/uv/getting-started/installation/#installation-methods) and [updated](https://docs.astral.sh/uv/getting-started/installation/#upgrading-uv):
 
     uv self update
 
@@ -70,18 +70,6 @@ To build a distributable .pyz file run:
 
 This is like what what [Rollup](https://rollupjs.org/) does for Vite
 
-# To be added
-
-- [Treeshaking](https://webpack.js.org/guides/tree-shaking/)
-- Rewriting some time critical parts in Rust
-- Adding inline script metadata to all source files by default
-- Plugin and loader system (like rollup and webpack)
-- Python based config file for more granular builds rather then using the pyproject.toml
-
-# Contributions
-
-All contributions are welcome, I'm not the best in the world at project management but if you think you can add a feature or improve anything please send over a pull request!
-
 # Building from source
 
 ### Requirements
@@ -89,15 +77,25 @@ All contributions are welcome, I'm not the best in the world at project manageme
 To build the project from source you need two tools:
 
 1) [uv](https://docs.astral.sh/uv/#getting-started)
-2) [TaskFile](https://taskfile.dev/installation/)
+2) [justfile](https://just.systems/man/en/installation.html)
 
 ### Process
 
-1) CD to project directory and run:
+1) CD to the project directory and run:
 
-        task setup
+        just setup
 
 
 2) Then to build a distributable tar.gz and wheel:
 
-        task build
+        just build
+
+You can also now use the included rust-just by prepending `uv run` e.g.
+
+```
+uv run just <command>
+```
+
+# Contributions
+
+All contributions are welcome, if you utilise LLMs in your pull requests please specify and include its involvement
