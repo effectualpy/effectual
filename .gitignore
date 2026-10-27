@@ -11,6 +11,7 @@
 testing.py
 test.py
 /tests/out/bundle.pyz
+tests/uv.lock
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
