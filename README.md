@@ -62,7 +62,7 @@ To bundle in dev mode use:
 
 This is like what [esBuild](https://esbuild.github.io/) does for Vite
 
-## Production
+## For distribution
 
 To build a distributable .pyz file run:
 
@@ -90,12 +90,8 @@ To build the project from source you need two tools:
 
         just build
 
-You can also now use the included rust-just by prepending `uv run` e.g.
+Alternatively you can use the included rust-just by prepending `uv run` e.g.
 
 ```
 uv run just <command>
 ```
-
-# Contributions
-
-All contributions are welcome, if you utilise LLMs in your pull requests please specify and include its involvement
