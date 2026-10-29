@@ -42,9 +42,7 @@ def bundleFiles(
         cachePath: Path = Path("./.effectual_cache/cachedPackages")
         if cachePath.exists():
             if any(Path.iterdir(cachePath)):
-                print(
-                    f"{tagColor('bundling')}   || uv dependencies"  # noqa: E501
-                )
+                print(f"{tagColor('bundling')}   || uv dependencies")
                 for cachedFile in cachePath.rglob("*"):
                     if cachedFile.is_dir() and not any(cachedFile.iterdir()):
                         continue
