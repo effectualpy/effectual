@@ -1,4 +1,5 @@
 set minimum-version := '1.55.0'
+set script-interpreter := ['uv', 'run', '--script']
 
 [windows]
 set shell := ["powershell.exe", "-NoLogo", "-Command"]
@@ -20,6 +21,11 @@ bump:
 alias fmt := format
 format:
     uv run ruff format --config pyproject.toml
+
+[script]
+pyproject:
+    from pyproject_fmt import run
+    exitCode = run(["./pyproject.toml"])
 
 # Lints Python source files
 lint:
@@ -43,6 +49,7 @@ test:
 
 # Builds distributable tar.gz and wheels after performing checks
 build:
+    just pyproject
     just check
     just test
     uv build

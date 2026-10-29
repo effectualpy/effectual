@@ -1,14 +1,17 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = [ "hatchling" ]
+
 [project]
 name = "effectual"
 version = "0.8.18"
 description = "A python package/script bundler"
 readme = "README.md"
 license = "MIT"
-authors = [
-    { name = "jake", email = "jakewdr@proton.me" }
-]
+authors = [ { name = "jake", email = "jakewdr@proton.me" } ]
 requires-python = ">=3.11"
 classifiers = [
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -16,59 +19,56 @@ classifiers = [
     "Programming Language :: Python :: 3.15",
     "Programming Language :: Python :: Implementation :: CPython",
 ]
-
-environments = [
-    "implementation_name == 'cpython'"
-]
-
 dependencies = [
     "blake3>=1.0.11",
     "click>=8.1.7",
     "python-minifier>=2.11.3",
-    "rtoml>=0.11.0",
-    "termcolor>=2.4.0",
-    "watchfiles>=0.24.0",
+    "rtoml>=0.11",
+    "termcolor>=2.4",
+    "watchfiles>=0.24",
 ]
+urls.Homepage = "https://github.com/effectualpy/effectual"
+scripts.efec = "effectual:main"
+environments = [ "implementation_name == 'cpython'" ]
 
 [dependency-groups]
-
 dev = [
-    "hatch>=1.14.0",
+    "hatch>=1.14",
+    "pyproject-fmt>=2.30.3",
     "pytest>=9.1.1",
     "ruff>=0.8.1",
-    "rust-just>=1.59.0",
+    "rust-just>=1.59",
     "tox>=4.67.1",
-    "tox-uv>=1.37.0",
+    "tox-uv>=1.37",
     "ty>=0.0.84",
 ]
 
-[project.urls]
-Homepage = "https://github.com/effectualpy/effectual"
-
-[project.scripts]
-efec = "effectual:main"
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.hatch.build]
-reproducible = true
-
-[tool.hatch.build.targets.wheel]
-exclude = [".editorconfig", "justfile", "README.md", "uv.lock", "pyproject.toml",
-    "tox.toml", "./tests"]
-
-[tool.hatch.build.targets.sdist]
-exclude = [".editorconfig", "justfile", "README.md", "uv.lock", "pyproject.toml",
-    "tox.toml", "./tests/"]
+[tool.hatch]
+build.reproducible = true
+build.targets.wheel.exclude = [
+    ".editorconfig",
+    "justfile",
+    "README.md",
+    "uv.lock",
+    "pyproject.toml",
+    "tox.toml",
+    "./tests"
+]
+build.targets.sdist.exclude = [
+    ".editorconfig",
+    "justfile",
+    "README.md",
+    "uv.lock",
+    "pyproject.toml",
+    "tox.toml",
+    "./tests/"
+]
 
 [tool.ruff]
-
-include = ["src/**/*.py", "tests/**/*.py"]
-fix = true
-cache-dir = ".ruff_cache/"
-
+target-version = "py311"
+line-length = 90
+indent-width = 4
+include = [ "src/**/*.py", "tests/**/*.py" ]
 # Exclude a variety of commonly ignored directories.
 exclude = [
     ".bzr",
@@ -98,59 +98,53 @@ exclude = [
     "site-packages",
     "venv",
 ]
-
-line-length = 90
-indent-width = 4
-
-target-version = "py311"
-
-[tool.ruff.lint]
-# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
-# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
-# McCabe complexity (`C901`) by default.
-select = ["E", "F", "I", "TC", "ANN", "TYP", "PLE", "PERF", "PYI026", "PYI055", "NPY001", "C901", "W292"]
-ignore = []
-
-# Allow fix for all enabled rules (when `--fix`) is provided.
-fixable = ["ALL"]
-unfixable = []
-
-# Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-
-[tool.ruff.lint.pydocstyle]
-
-# Use Google-style docstrings.
-convention = "google"
-
-[tool.ruff.format]
-
-# Like Black, use double quotes for strings.
-quote-style = "double"
-
+fix = true
+cache-dir = ".ruff_cache/"
 # Like Black, indent with spaces, rather than tabs.
-indent-style = "space"
-
-# Like Black, respect magic trailing commas.
-skip-magic-trailing-comma = false
-
+format.indent-style = "space"
+# Like Black, use double quotes for strings.
+format.quote-style = "double"
 # Like Black, automatically detect the appropriate line ending.
-line-ending = "lf"
-
-# Enable auto-formatting of code examples in docstrings. Markdown,
-# reStructuredText code/literal blocks and doctests are all supported.
-#
-# This is currently disabled by default, but it is planned for this
-# to be opt-out in the future.
-docstring-code-format = false
-
+format.line-ending = "lf"
+# Like Black, respect magic trailing commas.
+format.skip-magic-trailing-comma = false
 # Set the line length limit used when formatting code snippets in
 # docstrings.
 #
 # This only has an effect when the `docstring-code-format` setting is
 # enabled.
-docstring-code-line-length = "dynamic"
+format.docstring-code-line-length = "dynamic"
+# Enable auto-formatting of code examples in docstrings. Markdown,
+# reStructuredText code/literal blocks and doctests are all supported.
+#
+# This is currently disabled by default, but it is planned for this
+# to be opt-out in the future.
+format.docstring-code-format = false
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+lint.select = [ "ANN", "C901", "E", "F", "I", "NPY001", "PERF", "PLE", "PYI026", "PYI055", "TC", "TYP", "W292" ]
+lint.ignore = []
+# Allow fix for all enabled rules (when `--fix`) is provided.
+lint.fixable = [ "ALL" ]
+lint.unfixable = []
+# Allow unused variables when underscore-prefixed.
+lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+# Use Google-style docstrings.
+lint.pydocstyle.convention = "google"
 
-[tool.ty.src]
+[tool.pyproject-fmt]
+column_width = 120
+indent = 4
+keep_full_version = false
+generate_python_version_classifiers = true
+max_supported_python = "3.15"
+table_format = "short"
+sub_table_spacing = ""
+separate_root_table = "\n"
+expand_tables = []
+collapse_tables = []
+skip_wrap_for_keys = []
 
-include = ["./src/effectual"]
+[tool.ty]
+src.include = [ "./src/effectual" ]
