@@ -38,9 +38,9 @@ type:
 
 # Type checks, Lints and Formats Python source files
 check:
+    just format
     just type
     just lint
-    just format
 
 # Runs tox which hence runs pytests
 alias tox := test
