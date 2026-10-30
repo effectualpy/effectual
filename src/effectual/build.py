@@ -39,28 +39,28 @@ def bundleFiles(
         compression=zipfile.ZIP_DEFLATED,  # Other forms of compression aren't supported
     ) as bundler:
         cachePath: Path = Path("./.effectual_cache/cachedPackages")
-        if cachePath.exists():
-            if any(Path.iterdir(cachePath)):
-                print(f"{tagColor('bundling')}   || uv dependencies")
-                for cachedFile in cachePath.rglob("*"):
-                    if cachedFile.is_dir() and not any(cachedFile.iterdir()):
-                        continue
-                    totalSize += cachedFile.stat().st_size
-                    stringCachedFile = str(cachedFile)
-                    if (
-                        cachedFile.suffix
-                        in (".pyc", ".pyd", "pyi", ".exe", ".typed", ".so")
-                        or "__pycache__" in stringCachedFile
-                        or ".dist-info" in stringCachedFile
-                        or ".lock" in stringCachedFile
-                        # Removes precompiled files alongside binaries and bloat
-                    ):
-                        continue
-                    else:
-                        if cachedFile.suffix == ".py" and minification and freshHash:
-                            minifyFile(cachedFile)
-                        arcName: str = str(cachedFile.relative_to(cachePath))
-                        bundler.write(cachedFile, arcname=arcName)
+        if cachePath.exists() and any(
+            Path.iterdir(cachePath)
+        ):  # If cache path exists and is not empty
+            print(f"{tagColor('bundling')}   || uv dependencies")
+            for cachedFile in cachePath.rglob("*"):
+                if cachedFile.is_dir() and not any(cachedFile.iterdir()):
+                    continue
+                totalSize += cachedFile.stat().st_size
+                stringCachedFile = str(cachedFile)
+                if (
+                    cachedFile.suffix in (".pyc", ".pyd", "pyi", ".exe", ".typed", ".so")
+                    or "__pycache__" in stringCachedFile
+                    or ".dist-info" in stringCachedFile
+                    or ".lock" in stringCachedFile
+                    # Removes precompiled files alongside binaries and bloat
+                ):
+                    continue
+                else:
+                    if cachedFile.suffix == ".py" and minification and freshHash:
+                        minifyFile(cachedFile)
+                    arcName: str = str(cachedFile.relative_to(cachePath))
+                    bundler.write(cachedFile, arcname=arcName)
 
         for pyFile in Path(sourceDirectory).rglob("*.py"):
             print(f"{tagColor('bundling')}   || {pyFile.name} {fileColor(pyFile)}")
