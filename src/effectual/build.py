@@ -1,10 +1,9 @@
-import os
 import zipfile
 from pathlib import Path
 from time import perf_counter
 from typing import Any
 
-from .colors import completeColor, errorColor, fileColor, folderColor, tagColor
+from .colors import completeColor, fileColor, folderColor, tagColor
 from .minification import minifyFile, minifyToString
 from .tomlHash import dumpHashes, getHash, loadConfig, loadToml
 
@@ -75,31 +74,6 @@ def bundleFiles(
     print(f"{folderColor(totalSize)} -> {fileColor(outputPath)}")
 
 
-def dependencies() -> None:
-    """Installs relevant dependencies"""
-    try:
-        packages: list[str] = (
-            loadToml("./pyproject.toml").get("project").get("dependencies")  # ty: ignore[unresolved-attribute]
-        )
-
-        if len(packages) != 0:
-            arguments: list[str] = ["--no-compile", "--quiet", "--no-binary=none"]
-
-            pathToInstallTo: str = "./.effectual_cache/cachedPackages"
-            argumentString: str = " ".join(arguments)
-
-            if Path(pathToInstallTo).exists():
-                __import__("shutil").rmtree(pathToInstallTo)  # Lazy import
-
-            for key in packages:
-                print(f"{tagColor('installing')} || {key}")
-                os.system(
-                    f'uv pip install "{key}" {argumentString} --target {pathToInstallTo}'
-                )
-    except ConnectionError:
-        print(errorColor("No internet connection"))
-
-
 def main() -> None:
     """Entrypoint
 
@@ -144,13 +118,13 @@ def main() -> None:
         if currentHash["hashes"] != lastHash:
             with open(uvHashPath, "w") as file:
                 dumpHashes(currentHash, file)
-            dependencies()
+            __import__(".prebundle").preparePackages()
         else:
             freshHash = False
     else:
         with open(uvHashPath, "x") as file:
             dumpHashes(currentHash, file)
-        dependencies()
+        __import__(".prebundle").preparePackages()
 
     bundleFiles(
         sourceDirectory,
