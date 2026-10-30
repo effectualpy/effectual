@@ -10,3 +10,6 @@ def test_bundle() -> None:
         "uv run ./tests/out/bundle.pyz", capture_output=True, text=True
     )
     assert runCommand.stdout.strip() == "Hello World\nHello from file2!"
+
+if __name__ == "__main__":
+    test_bundle()

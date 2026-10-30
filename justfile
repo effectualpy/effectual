@@ -45,7 +45,7 @@ check:
 # Runs tox which hence runs pytests
 alias tox := test
 test:
-    uv run tox
+    uv run tox -- --verbose
 
 # Builds distributable tar.gz and wheels after performing checks
 build:

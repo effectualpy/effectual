@@ -70,8 +70,8 @@ def bundleFiles(
             else:
                 bundler.write(pyFile, arcname=pyFile.name)
 
-    print(f"{tagColor('OUTPUT')}     || {outputFileName}")
-    print(f"{folderColor(totalSize)} -> {fileColor(outputPath)}")
+    print(f"{tagColor('output')}     || {outputFileName}")
+    print(f"{tagColor('saved')}      || {folderColor(totalSize)} -> {fileColor(outputPath)}")
 
 
 def main() -> None:
